@@ -1,4 +1,4 @@
-package thingworx;
+package tufts;
 
 import fi.iki.elonen.NanoHTTPD;
 
@@ -36,4 +36,35 @@ public class Request {
     public boolean isAdd(){
         return getUri().equals("/add/");
     }
+	
+	public String getText(){
+		return getParam("text");
+	}
+	
+	public Float getX(){
+		return Float.valueOf(getParam("x"));
+	}
+	
+	public Float getY(){
+		return Float.valueOf(getParam("y"));
+	}
+	
+	public String getImageUrl(){
+		return getParam("url");
+	}
+	public int getId(){
+		return Integer.valueOf(getParam("id"));
+	}
+	
+	public Float getSize(){
+		return Float.valueOf(getParam("size"));
+	}
+	
+	public int[] getColor(){
+		String[] rgb = getParam("color").split(",");
+		int r = Integer.valueOf(rgb[0]);
+		int g = Integer.valueOf(rgb[1]);
+		int b = Integer.valueOf(rgb[2]);
+		return new int[]{r, g, b};
+	}
 }
