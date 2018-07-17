@@ -1,0 +1,130 @@
+
+<input type="text" placeholder="id" id="id" /><br>
+
+<input type="text" placeholder="color" id="color" /><br>
+<input type="text" placeholder="size" id="size" /><br>
+<input type="text" placeholder="text" id="text" /><br>
+<button onclick="addText()">Add</button><br>
+<button id="up">Up</button><br>
+<button id="left">Left</button>
+<button id="right">Right</button><br>
+<button id="down">Down</button>
+<script>  
+  var textInfo = new Array();
+  var interval;
+  //if(document.getElementById("fast").checked){
+  if(false){
+  document.getElementById("left").onmousedown = function() {
+    interval = setInterval(function(){moveLeft(); }, 15);
+  };
+  document.getElementById("left").onmouseup = function() {
+    clearInterval(interval);
+  };
+  
+  document.getElementById("right").onmousedown = function() {
+    interval = setInterval(function(){moveRight(); }, 15);
+  };
+  document.getElementById("right").onmouseup = function() {
+    clearInterval(interval);
+  };
+  
+  document.getElementById("up").onmousedown = function() {
+    interval = setInterval(function(){moveUp(); }, 15);
+  };
+  document.getElementById("up").onmouseup = function() {
+    clearInterval(interval);
+  };
+  
+  document.getElementById("down").onmousedown = function() {
+    interval = setInterval(function(){moveDown(); }, 15);
+  };
+  document.getElementById("down").onmouseup = function() {
+    clearInterval(interval);
+  };
+  } else {
+  
+  document.getElementById("left").onmousedown = function() {
+    moveLeft();
+  };
+  
+  document.getElementById("right").onmousedown = function() {
+    moveRight();
+  };
+  
+  document.getElementById("up").onmousedown = function() {
+    moveUp();
+  };
+  
+  document.getElementById("down").onmousedown = function() {
+    moveDown(); 
+  };
+  }
+  function getRequest(url) {
+  fetch(url).then(function(r) {
+  }).catch(function(err) {
+  });
+  }
+ 
+function delete(){
+  var id = document.getElementById('id').value;
+  textInfo[id] = {};
+  getRequest('http://130.64.160.230:8080/delete/?text=' + textInfo[id].text + '&x=' + textInfo[id].x + '&y=' + textInfo[id].y + '&color=' + textInfo[id].color + '&size=' + textInfo[id].size + '&id=' + id);
+  }
+  
+  function moveLeft(){
+  var id = document.getElementById('id').value;
+  var _x = textInfo[id].x - 10;
+  textInfo[id].x = _x;
+  getRequest('http://130.64.160.230:8080/update/?text=' + textInfo[id].text + '&x=' + textInfo[id].x + '&y=' + textInfo[id].y + '&color=' + textInfo[id].color + '&size=' + textInfo[id].size + '&id=' + id);
+  }
+  
+  function moveRight(){
+  var id = document.getElementById('id').value;
+  var _x = textInfo[id].x + 10;
+  textInfo[id].x = _x;
+  getRequest('http://130.64.160.230:8080/update/?text=' + textInfo[id].text + '&x=' + textInfo[id].x + '&y=' + textInfo[id].y + '&color=' + textInfo[id].color + '&size=' + textInfo[id].size + '&id=' + id);
+  }
+  
+  function moveDown(){
+  var id = document.getElementById('id').value;
+  var _y = textInfo[id].y + 10;
+  textInfo[id].y = _y;
+  getRequest('http://130.64.160.230:8080/update/?text=' + textInfo[id].text + '&x=' + textInfo[id].x + '&y=' + textInfo[id].y + '&color=' + textInfo[id].color + '&size=' + textInfo[id].size + '&id=' + id);
+ }
+  function moveUp(){
+  var id = document.getElementById('id').value;
+  var _y = textInfo[id].y - 10;
+  textInfo[id].y = _y;
+  getRequest('http://130.64.160.230:8080/update/?text=' + textInfo[id].text + '&x=' + textInfo[id].x + '&y=' + textInfo[id].y + '&color=' + textInfo[id].color + '&size=' + textInfo[id].size + '&id=' + id);
+ }
+  
+  function addText(){
+    var _text = document.getElementById('text').value;
+    var id = document.getElementById('id').value;
+    var _color = document.getElementById('color').value;
+    var _size = document.getElementById('size').value;
+    textInfo[id] = {x:50, y:50, text:_text, color:_color, size:_size};
+  getRequest('http://130.64.160.230:8080/add/?text=' + textInfo[id].text + '&x=' + textInfo[id].x + '&y=' + textInfo[id].y + '&color=' + textInfo[id].color + '&size=' + textInfo[id].size + '&id=' + id);
+  }
+  
+  function changeText(){
+  var _text = document.getElementById('text').value;
+    var id = document.getElementById('id').value;
+    textInfo[id].text = _text;
+  getRequest('http://130.64.160.230:8080/update/?text=' + textInfo[id].text + '&x=' + textInfo[id].x + '&y=' + textInfo[id].y + '&color=' + textInfo[id].color + '&size=' + textInfo[id].size + '&id=' + id);
+  }
+  
+  function changeColor(){
+  var _color = document.getElementById('color').value;
+    var id = document.getElementById('id').value;
+    textInfo[id].color = _color;
+getRequest('http://130.64.160.230:8080/update/?text=' + textInfo[id].text + '&x=' + textInfo[id].x + '&y=' + textInfo[id].y + '&color=' + textInfo[id].color + '&size=' + textInfo[id].size + '&id=' + id);
+  }
+  
+  function changeSize(){
+  var _size = document.getElementById('size').value;
+    var id = document.getElementById('id').value;
+    textInfo[id].size = _size;
+  getRequest('http://130.64.160.230:8080/update/?text=' + textInfo[id].text + '&x=' + textInfo[id].x + '&y=' + textInfo[id].y + '&color=' + textInfo[id].color + '&size=' + textInfo[id].size + '&id=' + id);
+  }
+</script>
