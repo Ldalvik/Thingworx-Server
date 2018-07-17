@@ -1,11 +1,10 @@
 package tufts;
 
 import android.content.*;
-import android.graphics.*;
+import android.content.res.*;
 import android.net.wifi.*;
 import android.os.*;
 import android.support.v7.app.*;
-import android.view.*;
 import android.widget.*;
 import fi.iki.elonen.*;
 import java.io.*;
@@ -14,6 +13,7 @@ import thingworx.tufts.*;
 public class MainActivity extends AppCompatActivity {
 	RelativeLayout canvas;
 	Server s;
+	String fileTxt;
 	Creator c = null;
 	TextView[] textviews = new TextView[100];
 	ImageView[] images = new ImageView[100];
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main);
 	    canvas = (RelativeLayout) findViewById(R.id.canvas);
 		s = new Server();
+		fileTxt = openFile();
 		c = new Creator(canvas, MainActivity.this);
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle("Enable Web Server?");
@@ -54,14 +55,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Response serve(final IHTTPSession session) {
 			final Request r = new Request(session);
-			final String text = r.getText();
-			final Float x = r.getX();
-			final Float y = r.getY();
-			final int id = r.getId();
-			final Float size = r.getSize();
-			final int[] color = r.getColor();
-			final String imageUrl = r.getImageUrl();
-			if(r.getParam("id") != null){
+			if(!r.isControl()){
+				//fileTxt = "Success.";
+				final String text = r.getText();
+				final Float x = r.getX();
+				final Float y = r.getY();
+				final int id = r.getId();
+				final Float size = r.getSize();
+				final int[] color = r.getColor();
+				final String imageUrl = r.getImageUrl();
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run(){
@@ -88,16 +90,36 @@ public class MainActivity extends AppCompatActivity {
 						}
 					}
 				});
+			} else if(r.isControl()){
+				
 			}
-    		return newFixedLengthResponse("Connected.");
+			return newFixedLengthResponse(fileTxt);
 		}
 	}
+	
 	
 	public String phoneIp(){
 		WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
 		int ipAddress = wifiManager.getConnectionInfo().getIpAddress();
 		final String formattedIpAddress = String.format("%d.%d.%d.%d", (ipAddress & 0xff), (ipAddress >> 8 & 0xff), (ipAddress >> 16 & 0xff), (ipAddress >> 24 & 0xff));
 		return formattedIpAddress;
+	}
+	
+	public String openFile () {
+		System.out.println("Starting openFile now");
+		StringBuilder str = new StringBuilder();
+		AssetManager am = getAssets();
+		try {
+			InputStream is = am.open("webserver.html");
+			BufferedReader in = new BufferedReader(new InputStreamReader(is));
+			String inputLine;
+			while ((inputLine = in.readLine()) != null)
+				str.append(inputLine);
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return str.toString();
 	}
 }
 
