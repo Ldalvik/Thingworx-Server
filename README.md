@@ -11,3 +11,6 @@ to access server on other devices on the same network, replace localhost with ph
 /delete/ will delete an existing view
 
 thingworx property changed -> event in js to send GET request to 130.64.160.230:8080/method/?param=value -> phone receives request.
+
+
+will now serve a control interface html page if http:ip.address:8080/control/ is opened
