@@ -36,6 +36,9 @@ public class Request {
     public boolean isAdd(){
         return getUri().equals("/add/");
     }
+	public boolean isControl(){
+        return getUri().equals("/control/");
+    }
 	
 	public String getText(){
 		return getParam("text");
